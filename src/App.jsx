@@ -171,7 +171,7 @@ function App() {
   useEffect(() => {
     document.title =
       selectedPesticide && adiValue
-        ? `${selectedPesticide}_${adiValue}_${bodyWeight}_${tierLabel}_MRL_Risk_Report`
+        ? `${selectedPesticide}_${mrlSource}_${adiValue}_${bodyWeight}_${tierLabel}_MRL_Risk_Report`
         : "MRL Risk System"
   }, [selectedPesticide, adiValue, bodyWeight, tierLabel])  
 
@@ -261,7 +261,7 @@ function App() {
         />
         </div>
 
-      <div ref={printRef}>
+      <div style={{ marginTop: 30 }} ref={printRef}>
         <RiskSummary
           selectedMrlSource={mrlSource}
           selectedPesticide={selectedPesticide}
@@ -292,7 +292,7 @@ function App() {
         </button>
         </div>
 
-      
+        <div style={{ marginTop: 20 }} >
         <MRLTable 
           selectedItems={selectedItems}
           toggleItem={toggleItem}
@@ -302,6 +302,7 @@ function App() {
           openCategories={openCategories}
           toggleCategory={toggleCategory} 
         />
+        </div>
       </div>
     </div>
     

@@ -13,41 +13,100 @@ export default function RiskSummary({
   const matchedSources = adiData.filter(
     item => item.adi === adi
   )
+  const SOURCE_LABEL = {
+    codex: "Codex",
+    us: "US"
+  }
+
+  const Row = ({ label, children }) => (
+    <>
+      <div>{label}</div>
+      <div>{children}</div>
+    </>
+  )
 
   return (
-    <div style={{ marginBottom: 20 }}>
-      <h3>Risk Summary</h3>
+    
+    <div style={{
+      display: "grid",
+      gridTemplateColumns: "1fr 1fr",
+      gap: 24,
+      alignItems: "start"
+    }}>
 
-      <p>MRL Source: {selectedMrlSource}</p>
-      <p>Pesticide: {selectedPesticide}</p>
-      <p>ADI: {adi}</p>
-      <p>ADI Source:
-        {" "}
+  {/* LEFT：Risk Summary */}
+    <div style={{
+      display: "grid",
+      gridTemplateColumns: "140px 1fr",
+      rowGap: "6px",
+      columnGap: "12px",
+      justifyItems: "start",
+      textAlign: "left" 
+    }}>
+
+      <h3 style={{ gridColumn: "1 / -1", margin: 0, textAlign: "center" }}>
+        Risk Summary
+      </h3>
+
+      <div>MRL Source:</div>
+      <div>{SOURCE_LABEL[selectedMrlSource] || selectedMrlSource}</div>
+
+      <div>Pesticide:</div>
+      <div>{selectedPesticide}</div>
+
+      <div>ADI:</div>
+      <div>{adi}</div>
+
+      <div>ADI Source:</div>
+      <div>
         {matchedSources.map(item =>
-          `${item.org} (${item.year})`
+          `${SOURCE_LABEL[item.org] || item.org} (${item.year})`
         ).join(", ")}
-      </p>
-      <p>Body Weight: {bodyweight}</p>
-      <p>Total Exposure: {exposure.toFixed(6)}</p>
+      </div>
 
-      <p style={{ color: risk > 70 ? "red" : "green" }}>
-        Risk%ADI: {risk.toFixed(3)}
-      </p>
+      <div>Body Weight:</div>
+      <div>{bodyweight}</div>
+
+      <div>Total Exposure:</div>
+      <div>{exposure.toFixed(6)}</div>
+
+      <div>Risk%ADI:</div>
+      <div style={{ color: risk > 70 ? "red" : "green" }}>
+        {risk.toFixed(3)}
+      </div>
+
+    </div>
+
 
       {/* 各類別百分比*/}
-      <div style={{ marginTop: 10 }}>
-        <h4>Category Contribution TOP5</h4>
+      <div style={{
+        display: "grid",
+        gridTemplateColumns: "max-content max-content",
+        rowGap: "6px",
+        columnGap: "12px",
+        justifyItems: "start",
+        textAlign: "left"
+      }}>
+
+        <h3 style={{ gridColumn: "1 / -1", margin: 0, textAlign: "center" }}>
+          Category Contribution TOP5
+        </h3>
 
         {[...contribution]
-            .sort((a, b) => b.percent - a.percent)
-            .slice(0, 5)  //最高的5類
-            .map((d) => (
-                <div key={d.category} style={{ marginBottom: 4 }}>
-                {d.category}: {d.percent.toFixed(1)}%
-                </div>
-            ))
-            }
+          .sort((a, b) => b.percent - a.percent)
+          .slice(0, 5)
+          .map((d) => (
+            <div key={d.category} style={{ display: "contents" }}>
+              <div>{d.label} {d.category}:</div>
+              <div style={{ textAlign: "right" }}>
+                {d.percent.toFixed(1)}%
+              </div>
+            </div>
+          ))
+        }
+
       </div>
-    </div>
+      </div>
+
   )
 }

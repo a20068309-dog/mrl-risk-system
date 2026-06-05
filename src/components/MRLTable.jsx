@@ -28,11 +28,20 @@ export default function MRLTable({
       const cat = item.category
 
       if (!grouped[cat]) {
-        grouped[cat] = []
+        grouped[cat] = {
+          items: [],
+          label: null,
+          name: item.category
+        }
       }
 
-      grouped[cat].push(item)
-    })  
+      grouped[cat].items.push(item)
+
+      if (item.label && !grouped[cat].label) {
+        grouped[cat].label = item.label
+      }})
+
+
 
   const categoryOrder = [
     ...categoryDisplayOrder.filter(cat => grouped[cat]),
@@ -56,7 +65,7 @@ export default function MRLTable({
       <tbody>
         {categoryOrder.map(cat => {
 
-          const items = grouped[cat] || []
+          const items = grouped[cat]?.items || []
           const isOpen = openCategories.includes(cat)
 
           const maxExposure = categoryMaxExposure?.[cat]
@@ -74,7 +83,7 @@ export default function MRLTable({
                 }}
               >
                 <td colSpan="7">
-                  {isOpen ? "▼" : "▶"} {cat}
+                  {isOpen ? "▼" : "▶"}  {grouped[cat].label} {grouped[cat].name}
 
                   <span style={{ marginLeft: 10, color: "#555", fontWeight: "normal" }}>
                     Max Exposure:{" "}

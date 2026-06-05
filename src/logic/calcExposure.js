@@ -7,6 +7,7 @@ export function buildExposure(
   selectedItems,
   bodyWeight = 60,
   categoryKey = "category_t1"
+  
 ) {
 
   // =========================
@@ -53,6 +54,7 @@ export function buildExposure(
   // =========================
 
   const intakeMap = {}
+  const labelMap = {}
 
   activeIntakeData.forEach(d => {
 
@@ -63,9 +65,15 @@ export function buildExposure(
 
     if (!key) return
 
-    intakeMap[key.trim()] =
+    const category = key.trim()
+
+    intakeMap[category] =
       Number(d.intake) || 0
+
+    labelMap[category] =
+      d.label ?? ""
   })
+
 
   // =========================
   // 5. 所有 category list
@@ -106,7 +114,8 @@ export function buildExposure(
         (limit * intake) / bodyWeight,
       isSelected:
         selectedItems.includes(item.crop),
-      isLOQ: false
+      isLOQ: false,
+      label: labelMap[category] ?? ""
     }
   })
 
@@ -139,7 +148,8 @@ export function buildExposure(
         selectedItems.includes(
           `LOQ-${category}`
         ),
-      isLOQ: true
+      isLOQ: true,
+      label: labelMap[category] ?? ""
     }
   })
 
@@ -214,7 +224,8 @@ export function buildExposure(
 
   const { chartData } =
     buildCategoryChart(
-      categoryMaxExposure
+      categoryMaxExposure, 
+      labelMap
     )
 
   return {
