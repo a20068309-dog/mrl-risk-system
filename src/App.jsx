@@ -21,7 +21,14 @@ import MRLTable from "./components/MRLTable"
 import Selectors from "./components/Selectors"
 
 function App() {
-  const { data: mrlData } = useMRLData()
+  const [mrlSource, setMrlSource] = useState("codex")
+  const { data: codexData } =  useMRLData("codex_mrl.xlsx")
+  const { data: usData } =  useMRLData("us_mrl.xlsx")
+  const mrlData =
+    mrlSource === "us"
+      ? usData
+      : codexData
+  
   const { data: adiData } = useADIData()
   const { data: intakeData } = useFoodTable()
 
@@ -33,7 +40,7 @@ function App() {
   const [tierMode, setTierMode] = useState("t1")
 
 
-  const [bodyWeight, setBodyWeight] = useState(60)
+  const [bodyWeight, setBodyWeight] = useState(66.3)
   
   const [selectedItems, setSelectedItems] = useState([])
   const [openCategories, setOpenCategories] = useState([])
@@ -51,6 +58,21 @@ function App() {
 
   const categoryKey = TIER_MAP[tierMode]
   const tierLabel = TIER_LABEL[tierMode]
+
+  // 目前選到的 pesticide 不存在於新的 MRL 資料集時，就自動清空
+  useEffect(() => {
+    if (!mrlData) return
+
+    const exists =
+      mrlData.some(
+        x => x.pesticide_en === selectedPesticide
+      )
+
+    if (!exists) {
+      setSelectedPesticide("")
+      setSelectedADIIndex(0)
+    }
+  }, [mrlData])
 
   // reset ADI
   useEffect(() => {
@@ -221,6 +243,8 @@ function App() {
         
         <div className="no-print">
         <Selectors
+          mrlSource={mrlSource}
+          setMrlSource={setMrlSource}
 
           pesticideList={pesticideList}
           selectedPesticide={selectedPesticide}
@@ -239,6 +263,7 @@ function App() {
 
       <div ref={printRef}>
         <RiskSummary
+          selectedMrlSource={mrlSource}
           selectedPesticide={selectedPesticide}
           adi={adiValue}
           adiData={currentADIList}

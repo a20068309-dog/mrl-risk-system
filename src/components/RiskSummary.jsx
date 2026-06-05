@@ -1,4 +1,5 @@
 export default function RiskSummary({
+  selectedMrlSource,
   selectedPesticide,
   adi,
   adiData = [],
@@ -17,9 +18,10 @@ export default function RiskSummary({
     <div style={{ marginBottom: 20 }}>
       <h3>Risk Summary</h3>
 
+      <p>MRL Source: {selectedMrlSource}</p>
       <p>Pesticide: {selectedPesticide}</p>
       <p>ADI: {adi}</p>
-      <p>ADI Sources:
+      <p>ADI Source:
         {" "}
         {matchedSources.map(item =>
           `${item.org} (${item.year})`

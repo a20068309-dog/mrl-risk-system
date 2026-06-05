@@ -5,6 +5,9 @@ import "../styles/selectors.css"
 
 
 export default function Selectors({
+  mrlSource,
+  setMrlSource,
+
   pesticideList,
   selectedPesticide,
   setSelectedPesticide,
@@ -33,7 +36,7 @@ export default function Selectors({
     <div
       style={{
         display: "grid",
-        gridTemplateColumns: "1fr 1fr",
+        gridTemplateColumns: "1fr 1.5fr 1fr",
         gap: 24
       }}
     >
@@ -46,6 +49,36 @@ export default function Selectors({
           gap: 20
         }}
       >
+
+        {/* MRL Source */}
+        <div>
+          <label className="field-label">
+            MRL Source
+          </label>
+          <select
+            value={mrlSource}
+            onChange={e => setMrlSource(e.target.value)}
+            className="modern-select"
+          >
+            <option value="codex">
+              Codex
+            </option>
+
+            <option value="us">
+              US
+            </option>
+          </select>
+        </div>
+      </div>
+
+      {/* CENTER COLUMN */}
+      <div
+        style={{
+          display: "flex",
+          flexDirection: "column",
+          gap: 20
+        }} 
+      >   
 
         {/* Pesticide */}
         <div>

@@ -1,8 +1,8 @@
 import useExcel from "./useExcel"
 
-export default function useMRLData() {
+export default function useMRLData(fileName = "mrl.xlsx") {
 
-  return useExcel("mrl.xlsx", (excel) => {
+  return useExcel(fileName, (excel) => {
 
     return excel.map(row => ({
 
