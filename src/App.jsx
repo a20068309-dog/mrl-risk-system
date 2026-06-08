@@ -7,6 +7,7 @@ import { useState, useEffect, useRef } from "react"
 import useMRLData from "./hooks/useMRLData"
 import useADIData from "./hooks/useADIData"
 import useFoodTable from "./hooks/useFoodTable"
+import useResidueDefinition from "./hooks/useResidueDefinition"
 
 import { buildExposure } from "./logic/calcExposure"
 import { buildCategoryChart } from "./logic/calcChart"
@@ -29,6 +30,7 @@ function App() {
       ? usData
       : codexData
   
+  const { data: residueDefinitionData } = useResidueDefinition()
   const { data: adiData } = useADIData()
   const { data: intakeData } = useFoodTable()
 
@@ -196,7 +198,7 @@ function App() {
 
  
 
-  if (!mrlData || !adiData || !intakeData) {
+  if (!mrlData || !residueDefinitionData || !adiData || !intakeData) {
     return <div>Loading...</div>
   } 
 
@@ -265,6 +267,7 @@ function App() {
         <RiskSummary
           selectedMrlSource={mrlSource}
           selectedPesticide={selectedPesticide}
+          residueDefinitionData={residueDefinitionData[selectedPesticide] || [] }
           adi={adiValue}
           adiData={currentADIList}
           bodyweight={bodyWeight}
