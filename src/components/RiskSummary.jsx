@@ -25,6 +25,12 @@ export default function RiskSummary({
     us: "US"
   }
 
+  // const Row = ({ label, children }) => (
+  //   <>
+  //     <div>{label}</div>
+  //     <div>{children}</div>
+  //   </>
+  // )
 
 
   return (

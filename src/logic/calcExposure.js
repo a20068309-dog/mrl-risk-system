@@ -7,7 +7,6 @@ export function buildExposure(
   selectedItems,
   bodyWeight = 60,
   categoryKey = "category_t1"
-  
 ) {
 
   // =========================
@@ -65,15 +64,12 @@ export function buildExposure(
 
     if (!key) return
 
-    const category = key.trim()
-
-    intakeMap[category] =
+    intakeMap[key.trim()] =
       Number(d.intake) || 0
 
-    labelMap[category] =
-      d.label ?? ""
+    labelMap[key.trim()] =
+      d.label ?? ""  
   })
-
 
   // =========================
   // 5. 所有 category list
@@ -224,7 +220,7 @@ export function buildExposure(
 
   const { chartData } =
     buildCategoryChart(
-      categoryMaxExposure, 
+      categoryMaxExposure,
       labelMap
     )
 
