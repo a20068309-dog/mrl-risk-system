@@ -8,20 +8,29 @@ export default function useADIData() {
 
     excel.forEach((row) => {
 
-      const name = row.Name
+      // lookup key
+      const nameKey = String(row.Name || "")
+        .trim()
+        .toLowerCase()
 
-      if (!formatted[name]) {
-        formatted[name] = []
+      if (!formatted[nameKey]) {
+        formatted[nameKey] = []
       }
 
-      formatted[name].push({
+      formatted[nameKey].push({
+
+        // 顯示用原始名稱
+        pesticideName: String(row.Name || "").trim(),
+
         year: row.Year,
 
         adi:
           parseFloat(row["ADI(mg/kg bw)"]) || 0,
 
-        org: row.來源
-          
+        org: String(row.來源 || "")
+          .trim()
+          .toLowerCase()
+
       })
     })
 

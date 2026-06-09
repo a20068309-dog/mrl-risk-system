@@ -59,7 +59,7 @@ function App() {
     if (!mrlData) return
 
     const exists = mrlData.some(
-      x => x.pesticide_en === selectedPesticide
+      x => x.pesticide_key === selectedPesticide
     )
 
     if (!exists) {
@@ -161,10 +161,32 @@ function App() {
 
   const risk = calcRisk(totalExposure, adiValue)
 
-  const pesticideList = useMemo(
-    () => [...new Set((mrlData || []).map(i => i.pesticide_en))],
-    [mrlData]
-  )
+  const pesticideList = useMemo(() => {
+    const unique = new Map()
+
+    ;(mrlData || []).forEach(item => {
+
+      if (!unique.has(item.pesticide_key)) {
+
+        unique.set(
+          item.pesticide_key,
+          item.pesticide_en
+        )
+      }
+    })
+
+    return Array.from(unique.entries()).map(
+      ([value, label]) => ({
+        value,
+        label
+      })
+    )
+  }, [mrlData])
+
+  const selectedPesticideName =
+    mrlData?.find(
+      x => x.pesticide_key === selectedPesticide
+    )?.pesticide_en || selectedPesticide
 
   const currentADIList = adiData?.[selectedPesticide] || []
 
@@ -209,6 +231,8 @@ function App() {
   }
 
 // console.log(chartData)
+// console.log("selectedPesticide =", selectedPesticide)
+// console.log("ADI data =", adiData?.[selectedPesticide])
 
   return (
     <div style={{ padding: 20 }}>
@@ -237,7 +261,8 @@ function App() {
 
         <RiskSummary
           selectedMrlSource={mrlSource}
-          selectedPesticide={selectedPesticide}
+          selectedPesticideKey={selectedPesticide}
+          selectedPesticideName={selectedPesticideName}
           residueDefinitionData={
             residueDefinitionData?.[selectedPesticide] || []
           }
@@ -249,7 +274,7 @@ function App() {
           contribution={chartData}
         />
 
-        <div className="no-print">
+        {/* <div className="no-print">
           <button onClick={exportWord}>Export Word</button>
           <button onClick={() => window.print()}>Window Print</button>
           <button
@@ -262,8 +287,9 @@ function App() {
           >
             Export PDF
           </button>
-        </div>
+        </div> */}
 
+        <div style={{ marginTop: 30 }} >
         <MRLTable
           selectedItems={selectedItems}
           toggleItem={toggleItem}
@@ -273,7 +299,7 @@ function App() {
           openCategories={openCategories}
           toggleCategory={toggleCategory}
         />
-
+        </div>
       </div>
     </div>
   )

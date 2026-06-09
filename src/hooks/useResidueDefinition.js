@@ -8,15 +8,27 @@ export default function useResidueDefinition() {
 
     excel.forEach((row) => {
 
-      const pesticide = row.Pesticide
+      // lookup key
+      const pesticideKey = String(row.Pesticide || "")
+        .trim()
+        .toLowerCase()
 
-      if (!formatted[pesticide]) {
-        formatted[pesticide] = []
+      if (!formatted[pesticideKey]) {
+        formatted[pesticideKey] = []
       }
 
-      formatted[pesticide].push({
-        org: row.org,
-        residueDefinition: row.residue_definition
+      formatted[pesticideKey].push({
+
+        // 顯示用原始名稱
+        pesticideName: String(row.Pesticide || "").trim(),
+
+        org: String(row.org || "")
+          .trim()
+          .toLowerCase(),
+
+        residueDefinition: String(
+          row.residue_definition || ""
+        ).trim()
       })
 
     })

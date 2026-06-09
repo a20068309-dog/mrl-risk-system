@@ -1,6 +1,7 @@
 export default function RiskSummary({
   selectedMrlSource,
   selectedPesticide,
+  selectedPesticideName,
   adi,
   adiData = [],
   residueDefinitionData = [],
@@ -21,8 +22,12 @@ export default function RiskSummary({
   )
 
   const SOURCE_LABEL = {
+    au: "AU",
     codex: "Codex",
-    us: "US"
+    us: "US",
+    eu: "EU",
+    jmpr: "JMPR",
+    jp: "JP"
   }
 
   // const Row = ({ label, children }) => (
@@ -57,7 +62,7 @@ export default function RiskSummary({
         </div>
 
         <div>Pesticide:</div>
-        <div>{selectedPesticide}</div>
+        <div>{selectedPesticideName}</div>
 
         <div>Residue Definition:</div>
         <div>

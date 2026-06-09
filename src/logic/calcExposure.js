@@ -30,7 +30,7 @@ export function buildExposure(
   const filtered =
     mrlData.filter(
       item =>
-        item.pesticide_en ===
+        item.pesticide_key ===
         selectedPesticide
     )
 
@@ -133,7 +133,7 @@ export function buildExposure(
       )?.LOQ ?? 0
 
     return {
-      pesticide_en: selectedPesticide,
+      pesticide_key: selectedPesticide,
       crop: `LOQ-${category}`,
       limit: loqLimit,
       category,

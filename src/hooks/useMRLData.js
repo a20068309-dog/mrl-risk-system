@@ -6,7 +6,15 @@ export default function useMRLData(fileName = "mrl.xlsx") {
 
     return excel.map(row => ({
 
-      pesticide_en: row.國際普通名稱,
+      // 用來比對
+      pesticide_key: String(row.國際普通名稱 || "")
+        .trim()
+        .toLowerCase(),
+
+      // 用來顯示
+      pesticide_en: String(row.國際普通名稱 || "")
+        .trim(),
+
       pesticide_ch: row.普通名稱,
 
       crop: row.作物類別,

@@ -22,13 +22,11 @@ export default function Selectors({
   setTierMode 
 }) {
 
-  // react-select 需要 { value, label } 格式
+  // 
   const options = [...pesticideList]
-    .sort((a, b) => a.localeCompare(b))
-    .map(p => ({
-      value: p,
-      label: p
-    }));
+    .sort((a, b) =>
+      a.label.localeCompare(b.label)
+    )
 
   const selectedOption = options.find(o => o.value === selectedPesticide) || null
 
